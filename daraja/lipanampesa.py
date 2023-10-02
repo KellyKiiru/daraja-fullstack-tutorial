@@ -1,14 +1,14 @@
 import requests
 import base64
 from datetime import datetime
+from encode_base64 import generate_password
 
-from . import keys
-
+import keys
 unformatted_time = datetime.now()
 formatted_time = unformatted_time.strftime("%Y%m%d%H%M%S")
 
-
-
+encoded_string = generate_password(formatted_time)
+print(encoded_string)
 
 def lipanampesa():
     access_token = "access-token"
