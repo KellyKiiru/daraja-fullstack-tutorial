@@ -13,8 +13,6 @@ def generate_access_token():
     
     access_token = json_response["access_token"]
     
-    print(access_token)
+    print(f"access token: {access_token}")
     
     return access_token
-
-generate_access_token()
