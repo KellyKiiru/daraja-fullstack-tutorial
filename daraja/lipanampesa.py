@@ -1,34 +1,44 @@
 import requests
 import base64
 from datetime import datetime
-from encode_base64 import generate_password
 
 import keys
-unformatted_time = datetime.now()
-formatted_time = unformatted_time.strftime("%Y%m%d%H%M%S")
+from encode_base64 import generate_password
+from access_token import generate_access_token
 
-encoded_string = generate_password(formatted_time)
-print(encoded_string)
+
 
 def lipanampesa():
-    access_token = "access-token"
+    access_token = generate_access_token()
+    # print(f'access token:  {access_token}')
+    
+    unformatted_time = datetime.now()
+    formatted_time = unformatted_time.strftime("%Y%m%d%H%M%S")
+    # print(f"formatted time: {formatted_time}")
+    
+    encoded_password = generate_password(formatted_time)
+    # print(f"encoded password: {encoded_password}")
+    
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
     headers = {"Authorization": "Bearer %s" % access_token}
+    # print(f"headers: {headers}")
 
     request = {
         "BusinessShortCode": keys.BUSINESS_SHORT_CODE,
-        "Password": "<PASSWORD>",
-        "Timestamp": "1588835661",
+        "Password": encoded_password,
+        "Timestamp": formatted_time,
         "TransactionType": "CustomerPayBillOnline",
         "Amount": "1",
-        "PartyA":keys.PARTY_A,
+        "PartyA":keys.PHONE_NUMBER,
         "PartyB":keys.BUSINESS_SHORT_CODE,
-        "PhoneNumber":"",
-        "CallBackUrl":"http://127.0.0.1:8000/",
+        "PhoneNumber":keys.PHONE_NUMBER,
+        "CallBackURL":"https://cartera-sable.vercel.app/",
         "AccountReference":"ID-number",
-        "TransactionDesc":"",
+        "TransactionDesc":"mpesa trial",
     }
 
     response = requests.post(api_url, headers=headers, json=request)
 
-    print(response.json())
+    print(response.text)
+    
+lipanampesa()
