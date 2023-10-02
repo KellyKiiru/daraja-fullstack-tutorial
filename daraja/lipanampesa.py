@@ -10,18 +10,17 @@ from access_token import generate_access_token
 
 def lipanampesa():
     access_token = generate_access_token()
-    # print(f'access token:  {access_token}')
     
     unformatted_time = datetime.now()
     formatted_time = unformatted_time.strftime("%Y%m%d%H%M%S")
-    # print(f"formatted time: {formatted_time}")
     
     encoded_password = generate_password(formatted_time)
-    # print(f"encoded password: {encoded_password}")
     
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-    headers = {"Authorization": "Bearer %s" % access_token}
-    # print(f"headers: {headers}")
+    headers = {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer %s" % access_token
+        }
 
     request = {
         "BusinessShortCode": keys.BUSINESS_SHORT_CODE,
@@ -32,12 +31,12 @@ def lipanampesa():
         "PartyA":keys.PHONE_NUMBER,
         "PartyB":keys.BUSINESS_SHORT_CODE,
         "PhoneNumber":keys.PHONE_NUMBER,
-        "CallBackURL":"https://cartera-sable.vercel.app/",
+        "CallBackURL":keys.CALLBACKURL,
         "AccountReference":"ID-number",
         "TransactionDesc":"mpesa trial",
     }
-
-    response = requests.post(api_url, headers=headers, json=request)
+    
+    response = requests.post("api_url", headers=headers, json=request)
 
     print(response.text)
     
