@@ -36,7 +36,7 @@ def lipanampesa():
         "TransactionDesc":"mpesa trial",
     }
     
-    response = requests.post("api_url", headers=headers, json=request)
+    response = requests.post(api_url, headers=headers, json=request)
 
     print(response.text)
     
