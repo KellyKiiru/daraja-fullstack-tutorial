@@ -7,7 +7,6 @@ from encode_base64 import generate_password
 from access_token import generate_access_token
 
 
-
 def lipanampesa():
     access_token = generate_access_token()
     
